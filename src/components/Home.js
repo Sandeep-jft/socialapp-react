@@ -1,56 +1,42 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
+import AllPost from "./AllPost";
+import Axios from "axios";
+import M from "materialize-css";
 
 const Home = () => {
+  const [state, setstate] = useState([]);
+
+  useEffect(() => {
+    Axios.get("/allPost", {
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: "Bearer " + localStorage.getItem("jwt"),
+      },
+    })
+      .then((response) => {
+        if (response.data.error) {
+          M.toast({ html: response.data.error, classes: "#f44336 red" });
+        } else {
+          console.log("THe response of post is ", response.data.allpost);
+          setstate(response.data.allpost);
+        }
+      })
+      .catch((err) => {
+        console.log("Error : ", err);
+      });
+  }, []);
   return (
     <div>
-      <div className="card post_card">
-        <div className="card-image">
-          <img
-            src="https://images.unsplash.com/photo-1468272687535-bac12b03f098?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=500&q=60"
-            alt="post"
+      {state.map((value) => {
+        return (
+          <AllPost
+            key={value._id}
+            src={value.photo}
+            title={value.title}
+            body={value.body}
           />
-        </div>
-        <div className="card-content">
-          <i className="material-icons" style={{ color: "red" }}>
-            favorite
-          </i>
-          <h5>Title</h5>
-          <p>This is description of the post</p>
-          <input type="text" placeholder="add a comment" />
-        </div>
-      </div>
-      <div className="card post_card">
-        <div className="card-image">
-          <img
-            src="https://images.unsplash.com/photo-1468272687535-bac12b03f098?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=500&q=60"
-            alt="post"
-          />
-        </div>
-        <div className="card-content">
-          <i className="material-icons" style={{ color: "red" }}>
-            favorite
-          </i>
-          <h5>Title</h5>
-          <p>This is description of the post</p>
-          <input type="text" placeholder="add a comment" />
-        </div>
-      </div>
-      <div className="card post_card">
-        <div className="card-image">
-          <img
-            src="https://images.unsplash.com/photo-1468272687535-bac12b03f098?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=500&q=60"
-            alt="post"
-          />
-        </div>
-        <div className="card-content">
-          <i className="material-icons" style={{ color: "red" }}>
-            favorite
-          </i>
-          <h5>Title</h5>
-          <p>This is description of the post</p>
-          <input type="text" placeholder="add a comment" />
-        </div>
-      </div>
+        );
+      })}
     </div>
   );
 };

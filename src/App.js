@@ -18,31 +18,27 @@ const Routes = () => {
   useEffect(() => {
     const user = JSON.parse(localStorage.getItem("user"));
     if (user) {
-      console.log("Hey");
       dispatch({ type: "USER", payload: user });
-      history.push("/");
     } else history.push("/Login");
   }, []);
   return (
-    <>
-      <Switch>
-        <Route exact path="/">
-          <Home />
-        </Route>
-        <Route path="/Profile">
-          <Profile />
-        </Route>
-        <Route path="/Signup">
-          <Signup />
-        </Route>
-        <Route path="/Login">
-          <Login />
-        </Route>
-        <Route path="/CreatePost">
-          <CreatePost />
-        </Route>
-      </Switch>
-    </>
+    <Switch>
+      <Route exact path="/">
+        <Home />
+      </Route>
+      <Route path="/Profile">
+        <Profile />
+      </Route>
+      <Route path="/Signup">
+        <Signup />
+      </Route>
+      <Route path="/Login">
+        <Login />
+      </Route>
+      <Route path="/CreatePost">
+        <CreatePost />
+      </Route>
+    </Switch>
   );
 };
 
