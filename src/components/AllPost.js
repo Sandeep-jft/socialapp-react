@@ -23,6 +23,8 @@ export default class AllPost extends Component {
             <i className="material-icons" style={{ color: "red" }}>
               favorite
             </i>
+            <i className="material-icons">thumb_like</i>
+            <i className="material-icons">thumb_unlike</i>
             <h5>{this.props.title}</h5>
             <p>{this.props.body}</p>
             <input type="text" placeholder="add a comment" />
