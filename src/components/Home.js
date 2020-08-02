@@ -4,7 +4,9 @@ import Axios from "axios";
 import M from "materialize-css";
 
 const Home = () => {
-  const [state, setstate] = useState([]);
+  const [totalPost, setstate] = useState([]);
+
+  const [post, setPost] = useState([]);
 
   useEffect(() => {
     Axios.get("/allPost", {
@@ -25,15 +27,57 @@ const Home = () => {
         console.log("Error : ", err);
       });
   }, []);
+
+  const likePost = (_id) => {
+    console.log("The id is ", _id);
+    Axios.put(
+      "/likePost",
+      {
+        _id,
+      },
+      {
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: "Bearer " + localStorage.getItem("jwt"),
+        },
+      }
+    ).then((resp) => {
+      console.log("The response is ", resp);
+      setPost(resp.data.likes);
+    });
+  };
+  const unlikePost = (_id) => {
+    console.log("The id is ", _id);
+    Axios.put(
+      "/unlikePost",
+      {
+        _id,
+      },
+      {
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: "Bearer " + localStorage.getItem("jwt"),
+        },
+      }
+    ).then((resp) => {
+      console.log("The response is ", resp);
+      setPost(resp.data.likes);
+    });
+  };
+
   return (
     <div>
-      {state.map((value) => {
+      {totalPost.map((value) => {
         return (
           <AllPost
             key={value._id}
+            _id={value._id}
             src={value.photo}
             title={value.title}
             body={value.body}
+            like={likePost}
+            unlike={unlikePost}
+            length={post.length}
           />
         );
       })}
