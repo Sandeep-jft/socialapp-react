@@ -6,8 +6,6 @@ import M from "materialize-css";
 const Home = () => {
   const [totalPost, setstate] = useState([]);
 
-  const [post, setPost] = useState([]);
-
   useEffect(() => {
     Axios.get("/allPost", {
       headers: {
@@ -30,39 +28,61 @@ const Home = () => {
 
   const likePost = (_id) => {
     console.log("The id is ", _id);
-    Axios.put(
-      "/likePost",
-      {
-        _id,
+    fetch("/likePost", {
+      method: "put",
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: "Bearer " + localStorage.getItem("jwt"),
       },
-      {
-        headers: {
-          "Content-Type": "application/json",
-          Authorization: "Bearer " + localStorage.getItem("jwt"),
-        },
-      }
-    ).then((resp) => {
-      console.log("The response is ", resp);
-      setPost(resp.data.likes);
-    });
+      body: JSON.stringify({
+        _id: _id,
+      }),
+    })
+      .then((res) => res.json())
+      .then((resp) => {
+        console.log("The response is ", resp);
+        const newData = totalPost.map((val) => {
+          if (val._id == resp._id) {
+            return resp;
+          } else {
+            return val;
+          }
+        });
+        console.log("the new data is ", newData);
+        setstate(newData);
+      })
+      .catch((err) => {
+        console.log("Error : ", err);
+      });
   };
   const unlikePost = (_id) => {
     console.log("The id is ", _id);
-    Axios.put(
-      "/unlikePost",
-      {
-        _id,
+    fetch("/unlikePost", {
+      method: "put",
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: "Bearer " + localStorage.getItem("jwt"),
       },
-      {
-        headers: {
-          "Content-Type": "application/json",
-          Authorization: "Bearer " + localStorage.getItem("jwt"),
-        },
-      }
-    ).then((resp) => {
-      console.log("The response is ", resp);
-      setPost(resp.data.likes);
-    });
+      body: JSON.stringify({
+        _id: _id,
+      }),
+    })
+      .then((res) => res.json())
+      .then((resp) => {
+        console.log("The response is ", resp);
+        const newData = totalPost.map((val) => {
+          if (val._id == resp._id) {
+            return resp;
+          } else {
+            return val;
+          }
+        });
+        console.log("the new data is ", newData);
+        setstate(newData);
+      })
+      .catch((err) => {
+        console.log("Error : ", err);
+      });
   };
 
   return (
@@ -72,12 +92,14 @@ const Home = () => {
           <AllPost
             key={value._id}
             _id={value._id}
+            postedBy={value.postedBy}
             src={value.photo}
             title={value.title}
+            likes={value.likes}
             body={value.body}
             like={likePost}
             unlike={unlikePost}
-            length={post.length}
+            length={value.likes.length}
           />
         );
       })}

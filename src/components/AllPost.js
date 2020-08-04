@@ -2,6 +2,8 @@ import React, { Component, useContext, useState } from "react";
 import { userContext } from "../App";
 
 const AllPost = (props) => {
+  const { state, dispatch } = useContext(userContext);
+
   const likeFunction = () => {
     return props.like(props._id);
   };
@@ -13,6 +15,7 @@ const AllPost = (props) => {
     <>
       <div className="card post_card">
         <div className="card-image">
+          <h5>{props.postedBy.name} </h5>
           <img
             src={props.src}
             alt="post"
@@ -24,20 +27,25 @@ const AllPost = (props) => {
           <i className="material-icons" style={{ color: "red" }}>
             favorite
           </i>
-          <i
-            className="material-icons"
-            onClick={likeFunction}
-            style={{ cursor: "pointer" }}
-          >
-            thumb_up
-          </i>
-          <i
-            className="material-icons"
-            onClick={unlikeFunction}
-            style={{ cursor: "pointer" }}
-          >
-            thumb_down
-          </i>
+
+          {props.likes.includes(state._id) ? (
+            <i
+              className="material-icons"
+              onClick={unlikeFunction}
+              style={{ cursor: "pointer" }}
+            >
+              thumb_down
+            </i>
+          ) : (
+            <i
+              className="material-icons"
+              onClick={likeFunction}
+              style={{ cursor: "pointer" }}
+            >
+              thumb_up
+            </i>
+          )}
+
           <h6>
             {props.length <= 1
               ? props.length + " like"
