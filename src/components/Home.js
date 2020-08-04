@@ -85,6 +85,56 @@ const Home = () => {
       });
   };
 
+  const makeComment = (_id, text) => {
+    console.log("The id is ", _id);
+    fetch("/comments", {
+      method: "put",
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: "Bearer " + localStorage.getItem("jwt"),
+      },
+      body: JSON.stringify({
+        _id,
+        text,
+      }),
+    })
+      .then((res) => res.json())
+      .then((resp) => {
+        console.log("The response of comments is : ", resp);
+        const newData = totalPost.map((val) => {
+          if (val._id == resp._id) {
+            return resp;
+          } else {
+            return val;
+          }
+        });
+        console.log("the new data is ", newData);
+        setstate(newData);
+      })
+      .catch((err) => {
+        console.log("Error : ", err);
+      });
+  };
+
+  const deletePost = (_id) => {
+    const postId = _id;
+    fetch(`deletePost/${postId}`, {
+      method: "delete",
+      headers: {
+        "Content-type": "application/json",
+        Authorization: "Bearer " + localStorage.getItem("jwt"),
+      },
+    })
+      .then((res) => res.json())
+      .then((result) => {
+        console.log("The deleted post result is ", result);
+        const newData = AllPost.filter((item) => {
+          return item._id !== result._id;
+        });
+        setstate(newData);
+      });
+  };
+
   return (
     <div>
       {totalPost.map((value) => {
@@ -100,6 +150,9 @@ const Home = () => {
             like={likePost}
             unlike={unlikePost}
             length={value.likes.length}
+            value={value}
+            makeComment={makeComment}
+            deletePost={deletePost}
           />
         );
       })}

@@ -15,7 +15,20 @@ const AllPost = (props) => {
     <>
       <div className="card post_card">
         <div className="card-image">
-          <h5>{props.postedBy.name} </h5>
+          <h5 className="deletePost">
+            {props.postedBy.name}
+            {props.postedBy._id === state._id && (
+              <i
+                className="material-icons"
+                style={{ color: "red" }}
+                onClick={() => {
+                  props.deletePost(props._id);
+                }}
+              >
+                delete
+              </i>
+            )}
+          </h5>
           <img
             src={props.src}
             alt="post"
@@ -53,7 +66,28 @@ const AllPost = (props) => {
           </h6>
           <h6>{props.title}</h6>
           <p>{props.body}</p>
-          <input type="text" placeholder="add a comment" />
+          {props.value.comments.map((item, index) => {
+            return (
+              <h6 key={index}>
+                <span
+                  style={{ fontWeight: "350", textTransform: "capitalize" }}
+                >
+                  {item.postedBy.name}
+                </span>
+                &nbsp;
+                {item.text}
+              </h6>
+            );
+          })}
+          <form
+            onSubmit={(event) => {
+              event.preventDefault();
+              props.makeComment(props._id, event.target[0].value);
+              event.target[0].value = "";
+            }}
+          >
+            <input type="text" placeholder="add a comment" />
+          </form>
         </div>
       </div>
     </>

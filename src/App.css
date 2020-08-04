@@ -71,3 +71,11 @@
   right: 32px !important;
   left: auto !important;
 }
+
+.deletePost {
+  display: flex;
+  justify-content: space-between;
+  padding: 3px 3px 3px 1px;
+  /* padding-bottom: 1px; */
+  align-items: center;
+}
