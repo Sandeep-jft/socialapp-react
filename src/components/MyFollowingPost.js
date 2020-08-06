@@ -3,11 +3,11 @@ import AllPost from "./AllPost";
 import Axios from "axios";
 import M from "materialize-css";
 
-const Home = () => {
+const MyFollowingPost = () => {
   const [totalPost, setstate] = useState([]);
 
   useEffect(() => {
-    Axios.get("/allPost", {
+    Axios.get("/followingPost", {
       headers: {
         "Content-Type": "application/json",
         Authorization: "Bearer " + localStorage.getItem("jwt"),
@@ -185,4 +185,4 @@ const Home = () => {
   );
 };
 
-export default Home;
+export default MyFollowingPost;

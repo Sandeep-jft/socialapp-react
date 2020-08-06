@@ -1,5 +1,6 @@
 import React, { Component, useContext, useState } from "react";
 import { userContext } from "../App";
+import { Link } from "react-router-dom";
 
 const AllPost = (props) => {
   const { state, dispatch } = useContext(userContext);
@@ -16,11 +17,19 @@ const AllPost = (props) => {
       <div className="card post_card">
         <div className="card-image">
           <h5 className="deletePost">
-            {props.postedBy.name}
+            <Link
+              to={
+                props.postedBy.name !== state.name
+                  ? "/Profile/" + props.postedBy._id
+                  : "/Profile"
+              }
+            >
+              {props.postedBy.name}
+            </Link>
             {props.postedBy._id === state._id && (
               <i
                 className="material-icons"
-                style={{ color: "red" }}
+                style={{ color: "red", cursor: "pointer" }}
                 onClick={() => {
                   props.deletePost(props._id);
                 }}
@@ -76,6 +85,18 @@ const AllPost = (props) => {
                 </span>
                 &nbsp;
                 {item.text}
+                &nbsp;&nbsp;
+                {item.postedBy._id === state._id && (
+                  <i
+                    className="material-icons"
+                    style={{ color: "red", cursor: "pointer", float: "right" }}
+                    onClick={() => {
+                      props.deleteComment(item._id, props._id);
+                    }}
+                  >
+                    delete
+                  </i>
+                )}
               </h6>
             );
           })}

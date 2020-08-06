@@ -56,8 +56,14 @@
   justify-content: space-around;
 }
 
+.gallery img {
+  height: 300px;
+  object-fit: fill;
+}
+
 .items {
   width: 30%;
+  margin-bottom: 7px;
 }
 
 .post_card {

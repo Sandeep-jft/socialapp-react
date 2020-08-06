@@ -19,6 +19,9 @@ const Navbar = () => {
             <Link to="/Profile">Profile</Link>
           </li>
           <li>
+            <Link to="/followingPost">My following Post</Link>
+          </li>
+          <li>
             <button
               type="submit"
               className="btn waves-effect #e53935 red darken-1"
